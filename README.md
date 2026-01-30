@@ -1,45 +1,25 @@
-# File Organizer Python Script
+import os
+import shutil
 
-This Python script automatically organizes messy files in a folder based on their file extensions.
+def organize_files(folder_path):
+    if not os.path.exists(folder_path):
+        print("Klasör yok hacı.")
+        return
 
-## What does it do?
-- Scans a selected folder
-- Detects file extensions (pdf, docx, pptx, etc.)
-- Creates folders automatically
-- Moves files into the correct folders
+    for file in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, file)
 
-## Who is this for?
-- Students
-- Teachers
-- Office workers
-- Anyone tired of messy folders
+        if os.path.isfile(file_path):
+            ext = file.split(".")[-1].lower()
+            ext_folder = os.path.join(folder_path, ext.upper())
 
-## How to use
-1. Make sure Python is installed
-2. Run the script
-3. Enter the folder path
-4. Files will be organized automatically
+            if not os.path.exists(ext_folder):
+                os.makedirs(ext_folder)
 
-## Example
-Before:
-- random.pdf  
-- homework.docx  
-- slides.pptx  
+            shutil.move(file_path, os.path.join(ext_folder, file))
 
-After:
-- PDF/
-- DOCX/
-- PPTX/
+    print("Dosyalar adam edildi ✔")
 
-## Free vs Premium
-**Free version:**
-- Organizes files by extension
-
-**Premium version (coming soon 👀):**
-- Organize by subject name
-- Organize by date
-- Custom rules
-- Simple graphical interface (GUI)
-
-## License
-Free for personal use.
+if __name__ == "__main__":
+    target_folder = input("Düzenlenecek klasör yolunu gir: ")
+    organize_files(target_folder)
